@@ -32,6 +32,25 @@ services:
       exit 0;
       "
 
+  rest:
+    image: tabulario/iceberg-rest:1.6.0
+    container_name: iceberg-rest
+    ports:
+      - "8181:8181"
+    environment:
+      - AWS_ACCESS_KEY_ID=minioadmin
+      - AWS_SECRET_ACCESS_KEY=minioadmin
+      - AWS_REGION=us-east-1
+      - CATALOG_WAREHOUSE=s3://datalake/
+      - CATALOG_IO__IMPL=org.apache.iceberg.aws.s3.S3FileIO
+      - CATALOG_S3_ENDPOINT=http://minio:9000
+      - CATALOG_URI=jdbc:postgresql://postgres-metastore:5432/metastore?user=postgres&password=postgres
+      - CATALOG_JDBC_DRIVER=org.postgresql.Driver
+      - CATALOG_JDBC_USER=postgres
+      - CATALOG_JDBC_PASSWORD=postgres
+    depends_on:
+      - postgres-metastore
+
   trino:
     image: trinodb/trino:476
     container_name: trino
@@ -44,8 +63,8 @@ services:
     image: postgres:13
     container_name: postgres-metastore
     environment:
-      POSTGRES_USER: hive
-      POSTGRES_PASSWORD: hive
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: metastore
     ports:
       - "5433:5432"
