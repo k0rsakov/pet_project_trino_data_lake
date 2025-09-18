@@ -7,6 +7,14 @@
 docker compose up -d
 ```
 
+```bash
+docker-compose down && docker-compose build && docker-compose up -d  
+```
+
+```bash
+docker-compose up -d --force-recreate trino
+```
+
 ### Подключение к Minio
 
 Параметры подключения стандартные:
