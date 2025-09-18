@@ -32,7 +32,17 @@ services:
       exit 0;
       "
 
-  rest:
+  postgres-iceberg:
+    image: postgres:13
+    container_name: postgres-iceberg
+    environment:
+      POSTGRES_USER: iceberg
+      POSTGRES_PASSWORD: iceberg
+      POSTGRES_DB: iceberg_catalog
+    ports:
+      - "5432:5432"
+
+  iceberg-rest:
     image: tabulario/iceberg-rest:1.6.0
     container_name: iceberg-rest
     ports:
@@ -44,12 +54,13 @@ services:
       - CATALOG_WAREHOUSE=s3://datalake/
       - CATALOG_IO__IMPL=org.apache.iceberg.aws.s3.S3FileIO
       - CATALOG_S3_ENDPOINT=http://minio:9000
-      - CATALOG_URI=jdbc:postgresql://postgres-metastore:5432/metastore?user=postgres&password=postgres
+      - CATALOG_URI=jdbc:postgresql://postgres-iceberg:5432/iceberg_catalog
       - CATALOG_JDBC_DRIVER=org.postgresql.Driver
-      - CATALOG_JDBC_USER=postgres
-      - CATALOG_JDBC_PASSWORD=postgres
+      - CATALOG_JDBC_USER=iceberg
+      - CATALOG_JDBC_PASSWORD=iceberg
     depends_on:
-      - postgres-metastore
+      - postgres-iceberg
+      - minio
 
   trino:
     image: trinodb/trino:476
@@ -58,16 +69,8 @@ services:
       - "8080:8080"
     volumes:
       - ./trino/etc:/etc/trino
-
-  postgres-metastore:
-    image: postgres:13
-    container_name: postgres-metastore
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: metastore
-    ports:
-      - "5433:5432"
+    depends_on:
+      - iceberg-rest
 
   postgres-dwh:
     image: postgres:13
@@ -78,19 +81,3 @@ services:
       POSTGRES_DB: dwh
     ports:
       - "5434:5432"
-
-  hive-metastore:
-    image: bitsondatadev/hive-metastore:latest
-    container_name: hive-metastore
-    environment:
-      METASTORE_DB_HOSTNAME: postgres-metastore
-      METASTORE_DB_PORT: 5432
-      METASTORE_DB_DBNAME: metastore
-      METASTORE_DB_USER: hive
-      METASTORE_DB_PASS: hive
-    ports:
-      - "9083:9083"
-    depends_on:
-      - postgres-metastore
-    volumes:
-      - ./hive/conf/metastore-site.xml:/opt/apache-hive-metastore-3.0.0-bin/conf/metastore-site.xml:ro
