@@ -34,7 +34,6 @@ services:
 
   postgres-iceberg:
     image: postgres:13
-    container_name: postgres-iceberg
     environment:
       POSTGRES_USER: iceberg
       POSTGRES_PASSWORD: iceberg
@@ -54,13 +53,14 @@ services:
       - CATALOG_WAREHOUSE=s3://datalake/
       - CATALOG_IO__IMPL=org.apache.iceberg.aws.s3.S3FileIO
       - CATALOG_S3_ENDPOINT=http://minio:9000
-      - CATALOG_URI=jdbc:postgresql://postgres-iceberg:5432/iceberg_catalog
+      - CATALOG_URI=jdbc:postgresql://postgres-iceberg:5432/iceberg_catalog?user=iceberg&password=iceberg
       - CATALOG_JDBC_DRIVER=org.postgresql.Driver
       - CATALOG_JDBC_USER=iceberg
       - CATALOG_JDBC_PASSWORD=iceberg
     depends_on:
       - postgres-iceberg
       - minio
+      - minio-setup
 
   trino:
     image: trinodb/trino:476
