@@ -1,4 +1,4 @@
-# pet_project_trino_data_lake
+# Простой DataLake: Trino + S3 Minio + Spark + Iceberg
 
 
 ### Поднятие инфраструктуры
