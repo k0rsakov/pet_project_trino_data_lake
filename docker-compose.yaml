@@ -91,19 +91,12 @@ services:
       - AWS_S3_DISABLE_SSL=true
     depends_on:
       - rest
-#    restart: on-failure
 
   spark-iceberg:
     image: tabulario/spark-iceberg:3.5.5_1.8.1
-#    build: spark/
-#    networks:
-#      iceberg_net:
     depends_on:
       - rest
       - minio
-#    volumes:
-#      - ./datalake:/home/iceberg/datalake
-#      - ./notebooks:/home/iceberg/notebooks/notebooks
     environment:
       - AWS_ACCESS_KEY_ID=minioadmin
       - AWS_SECRET_ACCESS_KEY=minioadmin
