@@ -36,7 +36,7 @@ docker exec -it trino trino --server localhost:8080 --user test
 
 ### Gists
 
-Рабочая SparkSession:
+### Рабочая SparkSession:
 
 ```python
 from pyspark.sql import SparkSession
@@ -94,3 +94,32 @@ PySpark DML:
 # Записываем данные, используя полное имя: каталог.схема.таблица
 df.writeTo("datalake.nyc.taxis").createOrReplace()
 ```
+
+#### Trino authorization
+
+При работе с Trino могут возникнуть проблемы с подключением через DBevaer.
+
+Есть несколько вариантов как это можно исправить.
+
+##### Изменение `Driver Settings` в DBeaver
+
+1) Создаём подключение к Trino
+   - `host`: `localhost`
+   - `port`: `8080`
+2) В `Driver Settings` добавляем в `Settings`:
+   - `user`: `admin` (или любой другой, для Trino без настройки авторизации – не важно)
+   - Ставим флаг `No authentication`
+   - Ставим флаг `Allow Empty Password`
+
+##### Изменение `Driver Properties` в DBeaver
+
+1) Создаём подключение к Trino
+   - `host`: `localhost`
+   - `port`: `8080`
+2) В DBeaver: `ПКМ` → `Edit Connection` → вкладка `Driver Properties`.
+3) Найдите секцию `User Properties` (Обычно она внизу списка параметров)
+4) Добавьте параметры:
+   - Нажмите на `+` рядом с `User Properties`.
+   - В поле `Property Name` введите: `user`
+   - В поле `Value` введите: `admin` (или любой другой, для Trino без настройки авторизации – не важно)
+   - Аналогично (если потребуется), добавьте `password` и оставьте пустым или укажите любой текст.
