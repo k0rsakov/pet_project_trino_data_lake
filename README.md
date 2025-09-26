@@ -33,6 +33,7 @@ docker exec -it trino trino --server localhost:8080 --user test
 - [Unable to create and push iceberg tables to S3](https://stackoverflow.com/questions/79162751/unable-to-create-and-push-iceberg-tables-to-s3)
 - [CREATE TABLE fails with ICEBERG_FILESYSTEM_ERROR using Iceberg, Postgres, and MinIO #21404](https://github.com/trinodb/trino/issues/21404)
 - [Apache Iceberg Quickstart](https://iceberg.apache.org/spark-quickstart/)
+- [Trino Connectors](https://trino.io/docs/current/connector.html)
 
 ### Gists
 
