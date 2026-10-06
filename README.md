@@ -1,5 +1,19 @@
 # Простой DataLake: Trino + S3 Minio + Spark + Iceberg
 
+> [!NOTE]
+> **TL;DR** Заменил нерабочий Minio S3 на рабочий Silo S3. Проект снова актуален. Все изменения отображены в PR [#1](https://github.com/k0rsakov/pet_project_trino_data_lake/pull/1)
+
+> [!IMPORTANT]
+> [Minio](https://github.com/minio/minio) ушел из OpenSource, но Docker-образы были доступны.<br><br>
+> 2026-09-14 на Reddit был опубликован
+пост — [MinIO just removed their DockerHub image](https://www.reddit.com/r/minio/s/KxwCW1gKNE).<br><br>
+> Я не сижу на Reddit 24/7 и поэтому увидел пост не сразу. Узнал об этом когда получил сообщение по типу: "_проект не
+работает_".
+> Проинформировал, что в курсе проблемы в своем tg-канале — [пост](https://t.me/DataLikeQWERTY/194).<br><br>
+> Исследовал аналоги, думал взять совсем что-то другое, что описывал в этом [посте](https://t.me/DataLikeQWERTY/150)
+>, но решил остановить свой выбор на fork Minio — [PGSTY Silo](https://github.com/pgsty/silo).
+> На текущий момент (2026-10-05) Minio заменен на Silo. Более подробно описано в PR [#1](https://github.com/k0rsakov/pet_project_trino_data_lake/pull/1)
+
 ## О видео
 
 🚀 В этом [видео](https://youtu.be/-fAwvsbSZh0) ты увидишь, как построить настоящий Data Lake с нуля и разберёшься, зачем дата-инженеру Iceberg, Trino,
